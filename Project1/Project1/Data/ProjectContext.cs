@@ -3,9 +3,23 @@ using Project1.Models;
 
 namespace Project1.Data
 {
-    public class ProjectContext
+    public class ProjectContext : DbContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public ProjectContext(DbContextOptions<ProjectContext> options, IHttpContextAccessor httpContextAccessor)
+            : base(options)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            if(_httpContextAccessor.HttpContext == null)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
 
         #region DbSets
 
