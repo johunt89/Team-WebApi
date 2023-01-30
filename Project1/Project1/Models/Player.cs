@@ -67,6 +67,14 @@ namespace Project1.Models
         [DataType(DataType.EmailAddress)]
         public string EMail { get; set; }
 
+        [ScaffoldColumn(false)]
+        [Timestamp]
+        public Byte[] RowVersion { get; set; }
+
+        [Display(Name = "Team")]
+        public ICollection<Team> Teams { get; set; } = new List<Team>();
+
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (Age > 10 && FeePaid < 120.0)

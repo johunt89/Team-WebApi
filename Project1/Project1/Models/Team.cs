@@ -19,6 +19,14 @@ namespace Project1.Models
         [DataType(DataType.Currency)]
         public double Budget { get; set; }
 
+        [Display(Name = "League")]
+        [Required(ErrorMessage = "Please select a type.")]
+        public int LeagueCode { get; set; }
+        public League League { get; set; }
+
+
+        public ICollection<Player> Players { get; set; } = new List<Player>();
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 
