@@ -26,17 +26,24 @@ namespace Project1.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<League> Leagues { get; set; }
+        public DbSet<TeamPlayer> TeamPlayers { get; set; }
 
         #endregion
 
-        protected void OnModelCreating(ModelBuilder modelBuilder)  //override ??
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             //unique constraint(s)
 
             modelBuilder.Entity<League>()
-                .HasIndex(i => i.Code)
-                .IsUnique();
+                .HasKey(i => i.Code);
+
+            modelBuilder.Entity<TeamPlayer>()
+                .HasKey(i => new { i.PlayerID, i.TeamID });
+
+            //modelBuilder.Entity<League>()
+            //    .HasIndex(i => i.Code)
+            //    .IsUnique();
 
             modelBuilder.Entity<League>()
                 .HasMany<Team>(i => i.Teams)
@@ -45,9 +52,16 @@ namespace Project1.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Team>()
-                .HasMany<Player>(i => i.Players)
-                .WithMany(i => i.Teams);
-                //.OnDelete(DeleteBehavior.Restrict);
+                .HasMany<TeamPlayer>(i => i.TeamPlayers)
+                .WithOne(i => i.Team)
+                .HasForeignKey(i => i.TeamID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Player>()
+                .HasMany<TeamPlayer>(i => i.TeamPlayers)
+                .WithOne(i => i.Player)
+                .HasForeignKey(i => i.PlayerID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

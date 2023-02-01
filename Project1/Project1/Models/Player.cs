@@ -72,7 +72,7 @@ namespace Project1.Models
         public Byte[] RowVersion { get; set; }
 
         [Display(Name = "Team")]
-        public ICollection<Team> Teams { get; set; } = new List<Team>();
+        public ICollection<TeamPlayer> TeamPlayers { get; set; } = new List<TeamPlayer>();
 
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
