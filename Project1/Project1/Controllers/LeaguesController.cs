@@ -45,7 +45,8 @@ namespace Project1.Controllers
                     TeamCount = l.Teams.Count(),
                     Teams = l.Teams.Select(l => new TeamDTO
                     {
-
+                        Name = l.Name,
+                        Budget = l.Budget
                     }).ToList()
                 })
                 .ToListAsync();
@@ -67,7 +68,7 @@ namespace Project1.Controllers
             return league;
         }
 
-        // PUT: api/Leagues/5
+            
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLeague(string id, League league)

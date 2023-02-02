@@ -16,7 +16,7 @@ namespace Project1.Models
         public LeagueDTO League { get; set; }
 
 
-        public ICollection<TeamPlayer> TeamPlayers { get; set; } = new HashSet<TeamPlayer>();
+        public ICollection<TeamPlayer> TeamPlayers { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

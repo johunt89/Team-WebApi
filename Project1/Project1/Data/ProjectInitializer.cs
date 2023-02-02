@@ -61,7 +61,7 @@ namespace Project1.Data
                     },
                     new Team
                     {
-                        Name = "Sudbury Nickles",
+                        Name = "Thunder Bay Giants",
                         Budget = 10000.00,
                         LeagueCode = "ML"
                     },
@@ -73,7 +73,7 @@ namespace Project1.Data
                     },
                     new Team
                     {
-                        Name = "Saskatoon Flatlands",
+                        Name = "Regina Flatlands",
                         Budget = 10000.00,
                         LeagueCode = "PL"
                     }
