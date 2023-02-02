@@ -1,1 +1,10 @@
-﻿
+﻿Add-Migration -Context ProjectContext -o Data\ProjectMigrations Initial
+Update-Database -Context ProjectContext
+
+--
+
+at the end of Up() in migration:
+
+ExtraMigration.Steps(migrationBuilder);
+
+then update.

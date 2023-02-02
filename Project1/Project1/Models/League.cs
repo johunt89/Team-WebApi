@@ -1,5 +1,8 @@
-﻿namespace Project1.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Project1.Models
 {
+    [MetadataType(typeof(LeagueMetaData))]
     public class League
     {
         public string Code { get; set; }

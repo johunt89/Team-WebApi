@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Project_1.Models;
 using Project1.Models;
 
 namespace Project1.Data
@@ -7,17 +8,23 @@ namespace Project1.Data
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        public string UserName
+        {
+            get; private set;
+        }
+
         public ProjectContext(DbContextOptions<ProjectContext> options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
             if(_httpContextAccessor.HttpContext == null)
             {
-
+                UserName = _httpContextAccessor.HttpContext?.User.Identity.Name;
+                UserName ??= "Unknown";
             }
             else
             {
-
+                UserName = "Seed Data";
             }
         }
 
@@ -62,6 +69,37 @@ namespace Project1.Data
                 .WithOne(i => i.Player)
                 .HasForeignKey(i => i.PlayerID)
                 .OnDelete(DeleteBehavior.Cascade);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+        {
+            OnBeforeSaving();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+        private void OnBeforeSaving()
+        {
+            var entries = ChangeTracker.Entries();
+            foreach(var entry in entries)
+            {
+                if(entry.Entity is IAuditable trackable)
+                {
+                    var now = DateTime.UtcNow;
+                    switch (entry.State)
+                    {
+                        case EntityState.Modified:
+                            trackable.UpdatedOn = now;
+                            trackable.UpdatedBy = UserName;
+                            break;
+
+                        case EntityState.Added:
+                            trackable.CreatedOn = now;
+                            trackable.CreatedBy = UserName;
+                            trackable.UpdatedOn = now;
+                            trackable.UpdatedBy = UserName;
+                            break;
+                    }
+                }
+            }
         }
     }
 }

@@ -1,27 +1,18 @@
-﻿using Project_1.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Project_1.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace Project1.Models
 {
+    [ModelMetadataType(typeof(TeamMetaData))]
     public class Team : Auditable, IValidatableObject
     {
 
         public int ID { get; set; }
-
-        [Display(Name = "Team Name")]
-        [Required(ErrorMessage = "You cannot leave the team name blank.")]
-        [StringLength(70, ErrorMessage = "Team name cannot be more than 70 characters long.")]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "You cannot leave the Budget blank.")]
-        [Range(500.0, 10000.0, ErrorMessage = "Budget must be between $500 and $10,000.")]
-        [DataType(DataType.Currency)]
         public double Budget { get; set; }
-
-        [Display(Name = "League")]
-        [Required(ErrorMessage = "Please select a type.")]
-        public int LeagueCode { get; set; }
+        public string LeagueCode { get; set; }
         public League League { get; set; }
 
 

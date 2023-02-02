@@ -50,41 +50,41 @@ namespace Project1.Data
                     new Team
                     {
                         Name = "Toronto Laughs", //assign leagues
-                        LeagueCode = 3
+                        LeagueCode = "PP"
 
                     },
                     new Team
                     {
                         Name = "Hamilton Steel",
-                        LeagueCode = 1
+                        LeagueCode = "LL"
                     },
                     new Team
                     {
                         Name = "Sudbury Nickles",
-                        LeagueCode = 2
+                        LeagueCode = "ML"
                     },
                     new Team
                     {
                         Name = "Winnipeg Moose",
-                        LeagueCode = 2
+                        LeagueCode = "PP"
                     },
                     new Team
                     {
                         Name = "Saskatoon Flatlands",
-                        LeagueCode = 0
+                        LeagueCode = "PL"
                     }
                     ,
                     new Team
                     {
                         Name = "Vancouver Whales",
-                        LeagueCode = 3
+                        LeagueCode = "LL"
                     },
                     new Team
                     {
                         Name = "Edmonton Oilfields",
-                        LeagueCode = 1
+                        LeagueCode = "ML"
                     }
-                    );
+                    ); ;
                 }
                 //Player Data
                 if (!context.Players.Any())
