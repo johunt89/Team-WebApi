@@ -25,7 +25,9 @@ namespace Project1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
         {
-            return await _context.Players.ToListAsync();
+            return await _context.Players
+                .Include(t => t.TeamPlayers)
+                .ToListAsync();
         }
 
         // GET: api/Players/5

@@ -50,41 +50,48 @@ namespace Project1.Data
                     new Team
                     {
                         Name = "Toronto Laughs", //assign leagues
+                        Budget = 10000.00,
                         LeagueCode = "PP"
-
                     },
                     new Team
                     {
                         Name = "Hamilton Steel",
+                        Budget = 10000.00,
                         LeagueCode = "LL"
                     },
                     new Team
                     {
                         Name = "Sudbury Nickles",
+                        Budget = 10000.00,
                         LeagueCode = "ML"
                     },
                     new Team
                     {
                         Name = "Winnipeg Moose",
+                        Budget = 10000.00,
                         LeagueCode = "PP"
                     },
                     new Team
                     {
                         Name = "Saskatoon Flatlands",
+                        Budget = 10000.00,
                         LeagueCode = "PL"
                     }
                     ,
                     new Team
                     {
                         Name = "Vancouver Whales",
+                        Budget = 10000.00,
                         LeagueCode = "LL"
                     },
                     new Team
                     {
                         Name = "Edmonton Oilfields",
+                        Budget = 10000.00,
                         LeagueCode = "ML"
                     }
-                    ); ;
+                    );
+                    context.SaveChanges();
                 }
                 //Player Data
                 if (!context.Players.Any())
@@ -208,6 +215,7 @@ namespace Project1.Data
                             FeePaid = 150.00,
                             EMail = "Peter@email.com"
                         });
+                        context.SaveChanges(); 
                 }
                 if (!context.TeamPlayers.Any())
                 {
@@ -296,6 +304,7 @@ namespace Project1.Data
                             PlayerID = 9,
                             TeamID = 4
                         });
+                        context.SaveChanges();
                 }
             }
             catch (Exception ex)

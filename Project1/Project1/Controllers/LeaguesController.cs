@@ -23,16 +23,41 @@ namespace Project1.Controllers
 
         // GET: api/Leagues
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<League>>> GetLeagues()
+        public async Task<ActionResult<IEnumerable<LeagueDTO>>> GetLeagues()
         {
-            return await _context.Leagues.ToListAsync();
+            return await _context.Leagues
+                .Select(l => new LeagueDTO
+                {
+                    Code = l.Code,
+                    Name = l.Name
+                })
+                .ToListAsync();
+        }
+        [HttpGet("LeagueTeams")]
+        public async Task<ActionResult<IEnumerable<LeagueDTO>>> GetLeaguesTeams()
+        {
+            return await _context.Leagues
+                .Include(t => t.Teams)
+                .Select(l => new LeagueDTO
+                {
+                    Code = l.Code,
+                    Name = l.Name,
+                    TeamCount = l.Teams.Count(),
+                    Teams = l.Teams.Select(l => new TeamDTO
+                    {
+
+                    }).ToList()
+                })
+                .ToListAsync();
         }
 
         // GET: api/Leagues/5
         [HttpGet("{id}")]
         public async Task<ActionResult<League>> GetLeague(string id)
         {
-            var league = await _context.Leagues.FindAsync(id);
+            var league = await _context.Leagues
+                .Include(t => t.Teams)
+                .FirstOrDefaultAsync(i => i.Code == id);
 
             if (league == null)
             {

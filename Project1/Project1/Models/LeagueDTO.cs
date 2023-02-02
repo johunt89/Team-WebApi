@@ -7,7 +7,9 @@ namespace Project1.Models
     {
         public string Code { get; set; }
         public string Name { get; set; }
+        public int TeamCount { get; set; }
 
-        public ICollection<TeamDTO> Teams { get; set; } = new HashSet<TeamDTO>();
+
+        public ICollection<TeamDTO> Teams { get; set; }
     }
 }
