@@ -14,8 +14,10 @@ namespace Project1.Models
         public double Budget { get; set; }
         public string LeagueCode { get; set; }
         public LeagueDTO League { get; set; }
+        public int? PlayerCount { get; set; }
 
 
+        public ICollection<PlayerDTO> Players { get; set; }
         public ICollection<TeamPlayer> TeamPlayers { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

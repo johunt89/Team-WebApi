@@ -8,23 +8,6 @@ namespace Project1.Models
     [ModelMetadataType(typeof(PlayerMetaData))]
     public class PlayerDTO
     {
-        public int ID { get; set; }
-
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        }
-
-        public string FormalName
-        {
-            get
-            {
-                return LastName + ", " + FirstName;
-            }
-        }
 
         public int Age
         {
@@ -37,6 +20,7 @@ namespace Project1.Models
             }
         }
 
+        public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Jersey { get; set; }

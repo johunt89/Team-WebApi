@@ -33,6 +33,7 @@ namespace Project1.Controllers
                 })
                 .ToListAsync();
         }
+
         [HttpGet("LeagueTeams")]
         public async Task<ActionResult<IEnumerable<LeagueDTO>>> GetLeaguesTeams()
         {

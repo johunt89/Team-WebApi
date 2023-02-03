@@ -289,12 +289,6 @@ namespace Project1.Data
 
                         new TeamPlayer
                         {
-                            PlayerID = 11,
-                            TeamID = 0
-                        },
-
-                        new TeamPlayer
-                        {
                             PlayerID = 10,
                             TeamID = 6
                         },

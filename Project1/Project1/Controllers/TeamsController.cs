@@ -23,9 +23,45 @@ namespace Project1.Controllers
 
         // GET: api/Teams
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Team>>> GetTeams()
+        public async Task<ActionResult<IEnumerable<TeamDTO>>> GetTeams()
         {
-            return await _context.Teams.ToListAsync();
+            return await _context.Teams
+                .Select(t => new TeamDTO
+                {
+                    ID = t.ID,
+                    Name = t.Name,
+                    Budget = t.Budget,
+                    LeagueCode = t.LeagueCode,
+                    League = new LeagueDTO
+                    {
+                        Name = t.League.Name
+                    },
+                })
+                .ToListAsync();
+        }
+
+        [HttpGet("TeamPlayerCount")]
+        public async Task<ActionResult<IEnumerable<TeamDTO>>> GetTeamPlayerCounts()
+        {
+            return await _context.Teams
+                .Include(p => p.TeamPlayers)
+                .ThenInclude(p => p.Player)
+                .Select(t => new TeamDTO
+                {
+                    ID = t.ID,
+                    Name = t.Name,
+                    Budget = t.Budget,
+                    LeagueCode = t.LeagueCode,
+                    PlayerCount = t.TeamPlayers.Count(),
+                    Players = t.TeamPlayers.Select( p => new PlayerDTO
+                    {
+                        FirstName = p.Player.FirstName,
+                        LastName = p.Player.LastName,
+                        DOB = p.Player.DOB,
+                        FeePaid = p.Player.FeePaid
+                    }).ToList()
+                })
+                .ToListAsync();
         }
 
         // GET: api/Teams/5
