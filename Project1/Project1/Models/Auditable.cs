@@ -18,8 +18,8 @@ namespace Project_1.Models
         [ScaffoldColumn(false)]
         public DateTime? UpdatedOn { get; set; }
 
-        [ScaffoldColumn(false)]
-        [Timestamp]
-        public Byte[] RowVersion { get; set; }//Added for concurrency
+        //[ScaffoldColumn(false)]
+        //[Timestamp]
+        //public Byte[] RowVersion { get; set; }//Added for concurrency
     }
 }

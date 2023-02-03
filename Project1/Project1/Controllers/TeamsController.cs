@@ -41,32 +41,6 @@ namespace Project1.Controllers
                 .ToListAsync();
         }
 
-        [HttpGet("ByLeague/{LeagueCode}")]
-        public async Task<ActionResult<IEnumerable<TeamDTO>>> GetTeamsPlayersByLeague(string leagueCode)
-        {
-            return await _context.Teams
-                
-                .Include(p => p.TeamPlayers)
-                .ThenInclude(p => p.Player)
-                .Select(t => new TeamDTO
-                {
-                    ID = t.ID,
-                    Name = t.Name,
-                    Budget = t.Budget,
-                    LeagueCode = t.LeagueCode,
-                    PlayerCount = t.TeamPlayers.Count,
-                    Players = t.TeamPlayers.Select(p => new PlayerDTO
-                    {
-                        FirstName = p.Player.FirstName,
-                        LastName = p.Player.LastName,
-                        DOB = p.Player.DOB,
-                        FeePaid = p.Player.FeePaid
-                    }).ToList()
-                })
-                .Where(l => l.LeagueCode.ToLower()== leagueCode.ToLower())
-                .ToListAsync();
-        }
-
         [HttpGet("TeamPlayerCount")]
         public async Task<ActionResult<IEnumerable<TeamDTO>>> GetTeamPlayerCounts()
         {
@@ -88,6 +62,32 @@ namespace Project1.Controllers
                         FeePaid = p.Player.FeePaid
                     }).ToList()
                 })
+                .ToListAsync();
+        }
+
+        [HttpGet("ByLeague/{id}")]
+        public async Task<ActionResult<IEnumerable<TeamDTO>>> GetTeamsPlayersByLeague(string id)
+        {
+            return await _context.Teams
+
+                .Include(p => p.TeamPlayers)
+                .ThenInclude(p => p.Player)
+                .Select(t => new TeamDTO
+                {
+                    ID = t.ID,
+                    Name = t.Name,
+                    Budget = t.Budget,
+                    LeagueCode = t.LeagueCode,
+                    PlayerCount = t.TeamPlayers.Count,
+                    Players = t.TeamPlayers.Select(p => new PlayerDTO
+                    {
+                        FirstName = p.Player.FirstName,
+                        LastName = p.Player.LastName,
+                        DOB = p.Player.DOB,
+                        FeePaid = p.Player.FeePaid
+                    }).ToList()
+                })
+                .Where(l => l.LeagueCode.ToLower() == id.ToLower())
                 .ToListAsync();
         }
 
@@ -178,7 +178,7 @@ namespace Project1.Controllers
                 Name = teamDTO.Name,
                 Budget = teamDTO.Budget ?? throw new ArgumentNullException(nameof(teamDTO), "The value of 'teamDTO.Budget' should not be null"),
                 LeagueCode = teamDTO.LeagueCode ?? throw new ArgumentNullException(nameof(teamDTO), "The value of 'teamDTO.LeagueCode' should not be null"),
-                RowVersion = teamDTO.RowVersion,
+
             };
 
             try
@@ -187,7 +187,6 @@ namespace Project1.Controllers
                 await _context.SaveChangesAsync();
 
                 teamDTO.ID = team.ID;
-                teamDTO.RowVersion = team.RowVersion;
 
                 return CreatedAtAction(nameof(GetTeam), new { id = team.ID }, teamDTO);
             }

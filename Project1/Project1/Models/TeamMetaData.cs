@@ -20,7 +20,6 @@ namespace Project1.Models
         [Display(Name = "League")]
         [Required(ErrorMessage = "Please select a type.")]
         public string LeagueCode { get; set; }
-        public Byte[] RowVersion { get; set; }
 
 
         public ICollection<TeamPlayer> TeamPlayers { get; set; } = new HashSet<TeamPlayer>();
