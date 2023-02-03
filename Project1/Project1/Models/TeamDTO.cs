@@ -15,6 +15,7 @@ namespace Project1.Models
         public string? LeagueCode { get; set; }
         public LeagueDTO League { get; set; }
         public int? PlayerCount { get; set; }
+        public Byte[] RowVersion { get; set; }
 
 
         public ICollection<PlayerDTO> Players { get; set; }

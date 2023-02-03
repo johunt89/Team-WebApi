@@ -6,7 +6,7 @@ namespace Project1.Models
     public class LeagueMetaData
     {
         [Required(ErrorMessage = "You cannot leave the league code blank.")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Jersey Number must be 2 numeric digits.")]
+        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Jersey Number must be 2 letters.")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "League code must be 2 letters")]
         public string Code { get; set; }
 

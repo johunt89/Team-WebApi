@@ -14,6 +14,7 @@ namespace Project1.Models
         public double Budget { get; set; }
         public string LeagueCode { get; set; }
         public League League { get; set; }
+        public Byte[] RowVersion { get; set; }
 
 
         public ICollection<TeamPlayer> TeamPlayers { get; set; } = new HashSet<TeamPlayer>();

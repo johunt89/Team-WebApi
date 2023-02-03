@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Project1.Data;
 using Project1.Models;
@@ -40,10 +41,11 @@ namespace Project1.Controllers
                 .ToListAsync();
         }
 
-        [HttpGet("filterByLeague")]
-        public async Task<ActionResult<IEnumerable<TeamDTO>>> GetTeamsPlayersByLeague()
+        [HttpGet("ByLeague/{LeagueCode}")]
+        public async Task<ActionResult<IEnumerable<TeamDTO>>> GetTeamsPlayersByLeague(string leagueCode)
         {
             return await _context.Teams
+                
                 .Include(p => p.TeamPlayers)
                 .ThenInclude(p => p.Player)
                 .Select(t => new TeamDTO
@@ -52,8 +54,8 @@ namespace Project1.Controllers
                     Name = t.Name,
                     Budget = t.Budget,
                     LeagueCode = t.LeagueCode,
-                    PlayerCount = t.TeamPlayers.Count(),
-                    Players = t.TeamPlayers.Select( p => new PlayerDTO
+                    PlayerCount = t.TeamPlayers.Count,
+                    Players = t.TeamPlayers.Select(p => new PlayerDTO
                     {
                         FirstName = p.Player.FirstName,
                         LastName = p.Player.LastName,
@@ -61,6 +63,7 @@ namespace Project1.Controllers
                         FeePaid = p.Player.FeePaid
                     }).ToList()
                 })
+                .Where(l => l.LeagueCode.ToLower()== leagueCode.ToLower())
                 .ToListAsync();
         }
 
@@ -105,43 +108,100 @@ namespace Project1.Controllers
         // PUT: api/Teams/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeam(int id, Team team)
+        public async Task<IActionResult> PutTeam(int id, TeamDTO teamDTO)
         {
-            if (id != team.ID)
+            if (id != teamDTO.ID)
             {
-                return BadRequest();
+                return BadRequest(new { message = "Error: ID does not match Team" });
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
-            _context.Entry(team).State = EntityState.Modified;
+            var teamToUpdate = await _context.Teams.FindAsync(id);
+
+            if(teamToUpdate == null)
+            {
+                return NotFound(new { mesage = "Error: Team record not found. " });
+            }
+
+            teamToUpdate.ID = teamDTO.ID;
+            teamToUpdate.Name = teamDTO.Name;
+            teamToUpdate.Budget = teamDTO.Budget ?? throw new ArgumentNullException(nameof(teamDTO), "The value of 'teamDTO.Budget' should not be null");
+            teamToUpdate.LeagueCode = teamDTO.LeagueCode ?? throw new ArgumentNullException(nameof(teamDTO), "The value of 'teamDTO.LeagueCode' should not be null");
+
+            _context.Entry(teamToUpdate).Property("RowVersion").OriginalValue = teamDTO.RowVersion;
 
             try
             {
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            catch(DbUpdateConcurrencyException)
             {
                 if (!TeamExists(id))
                 {
-                    return NotFound();
+                    return Conflict(new { message = "Concurrency Error: Team has been Removed." });
                 }
                 else
                 {
-                    throw;
+                    return Conflict(new { message = "Concurrency Error: Team has been updated by another user." });
                 }
             }
-
-            return NoContent();
+            catch(DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE"))
+                {
+                    return BadRequest(new { message = "Unable to save: Duplicate data" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Unable to save changes to database" });
+                }
+            }
         }
 
         // POST: api/Teams
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Team>> PostTeam(Team team)
+        public async Task<ActionResult<Team>> PostTeam(TeamDTO teamDTO)
         {
-            _context.Teams.Add(team);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            return CreatedAtAction("GetTeam", new { id = team.ID }, team);
+            Team team = new Team
+            {
+                ID = teamDTO.ID,
+                Name = teamDTO.Name,
+                Budget = teamDTO.Budget ?? throw new ArgumentNullException(nameof(teamDTO), "The value of 'teamDTO.Budget' should not be null"),
+                LeagueCode = teamDTO.LeagueCode ?? throw new ArgumentNullException(nameof(teamDTO), "The value of 'teamDTO.LeagueCode' should not be null"),
+                RowVersion = teamDTO.RowVersion,
+            };
+
+            try
+            {
+                _context.Teams.Add(team);
+                await _context.SaveChangesAsync();
+
+                teamDTO.ID = team.ID;
+                teamDTO.RowVersion = team.RowVersion;
+
+                return CreatedAtAction(nameof(GetTeam), new { id = team.ID }, teamDTO);
+            }
+            catch(DbUpdateException dex) 
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE"))
+                {
+                    return BadRequest(new { message = "Unable to save: Duplicate data" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Unable to save changes to database" });
+                }
+            }
         }
 
         // DELETE: api/Teams/5
@@ -151,13 +211,19 @@ namespace Project1.Controllers
             var team = await _context.Teams.FindAsync(id);
             if (team == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Delete Error: Team has already been removed." });
             }
-
-            _context.Teams.Remove(team);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            try
+            {
+                _context.Teams.Remove(team);
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(new { message = "Delete Error: Unable to delete team." });
+            }
+            
         }
 
         private bool TeamExists(int id)
