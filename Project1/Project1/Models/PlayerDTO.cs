@@ -28,8 +28,10 @@ namespace Project1.Models
         public double FeePaid { get; set; }
         public string EMail { get; set; }
         public Byte[] RowVersion { get; set; }
+        public int? TeamCount { get; set; }
+        
         public ICollection<TeamPlayer> TeamPlayers { get; set; } = new List<TeamPlayer>();
-
+        public ICollection<TeamDTO> Teams { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

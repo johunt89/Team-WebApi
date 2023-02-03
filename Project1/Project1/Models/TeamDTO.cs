@@ -11,8 +11,8 @@ namespace Project1.Models
 
         public int ID { get; set; }
         public string Name { get; set; }
-        public double Budget { get; set; }
-        public string LeagueCode { get; set; }
+        public double? Budget { get; set; }
+        public string? LeagueCode { get; set; }
         public LeagueDTO League { get; set; }
         public int? PlayerCount { get; set; }
 

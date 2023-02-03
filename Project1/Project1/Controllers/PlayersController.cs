@@ -23,10 +23,27 @@ namespace Project1.Controllers
 
         // GET: api/Players
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
+        public async Task<ActionResult<IEnumerable<PlayerDTO>>> GetPlayers()
         {
             return await _context.Players
-                .Include(t => t.TeamPlayers)
+                .Include(p => p.TeamPlayers)
+                .ThenInclude(t => t.Team)
+                .Select(p => new PlayerDTO
+                {
+                    ID = p.ID,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Jersey = p.Jersey,
+                    DOB = p.DOB,
+                    FeePaid = p.FeePaid,
+                    EMail = p.EMail,
+                    TeamCount = p.TeamPlayers.Count(),
+                    Teams = p.TeamPlayers.Select(t => new TeamDTO
+                    {
+                        ID = t.Team.ID,
+                        Name = t.Team.Name
+                    }).ToList()
+                })
                 .ToListAsync();
         }
 
