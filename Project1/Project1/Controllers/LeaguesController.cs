@@ -55,10 +55,21 @@ namespace Project1.Controllers
 
         // GET: api/Leagues/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<League>> GetLeague(string id)
+        public async Task<ActionResult<LeagueDTO>> GetLeague(string id)
         {
             var league = await _context.Leagues
                 .Include(t => t.Teams)
+                .Select(l => new LeagueDTO
+                {
+                    Code = l.Code,
+                    Name = l.Name,
+                    Teams = l.Teams.Select(lTeam => new TeamDTO
+                    {
+                        ID = lTeam.ID,
+                        Name = lTeam.Name,
+                        Budget = lTeam.Budget
+                    }).ToList()
+                })
                 .FirstOrDefaultAsync(i => i.Code == id);
 
             if (league == null)
@@ -69,60 +80,92 @@ namespace Project1.Controllers
             return league;
         }
 
-            
+        //PUT: api/Leagues/5    
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLeague(string id, League league)
+        public async Task<IActionResult> PutLeague(string id, LeagueDTO leagueDTO)
         {
-            if (id != league.Code)
+            if (id != leagueDTO.Code)
             {
-                return BadRequest();
+                return BadRequest(new { message = "Error: Code Does nto match League" });
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
-            _context.Entry(league).State = EntityState.Modified;
+            var leagueToUpdate = await _context.Leagues.FindAsync(id);
+            
+            if(leagueToUpdate == null)
+            {
+                return NotFound(new { message = "Error: League record not found. " });
+            }
+
+            leagueToUpdate.Code = leagueDTO.Code;
+            leagueToUpdate.Name = leagueDTO.Name;
 
             try
             {
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!LeagueExists(id))
                 {
-                    return NotFound();
+                    return Conflict(new { message = "Concurrency Error: League has been Removed." });
                 }
                 else
                 {
-                    throw;
+                    return Conflict(new { message = "Concurrency Error: League has been updated by another user." });
                 }
             }
-
-            return NoContent();
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE"))
+                {
+                    return BadRequest(new { message = "Unable to save: Duplicate data" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Unable to save changes to database" });
+                }
+            }
         }
 
         // POST: api/Leagues
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<League>> PostLeague(League league)
+        public async Task<ActionResult<League>> PostLeague(LeagueDTO leagueDTO)
         {
-            _context.Leagues.Add(league);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            League league = new League
+            {
+                Code = leagueDTO.Code,
+                Name = leagueDTO.Name
+            };          
             try
             {
+                _context.Leagues.Add(league);
                 await _context.SaveChangesAsync();
+                leagueDTO.Code = league.Code;
+                return CreatedAtAction(nameof(GetLeague), new { code = league.Code }, leagueDTO);
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException dex)
             {
-                if (LeagueExists(league.Code))
+                if (dex.GetBaseException().Message.Contains("UNIQUE"))
                 {
-                    return Conflict();
+                    return BadRequest(new { message = "Unable to save: Duplicate data" });
                 }
                 else
                 {
-                    throw;
+                    return BadRequest(new { message = "Unable to save changes to database" });
                 }
             }
-
-            return CreatedAtAction("GetLeague", new { id = league.Code }, league);
         }
 
         // DELETE: api/Leagues/5
@@ -132,13 +175,20 @@ namespace Project1.Controllers
             var league = await _context.Leagues.FindAsync(id);
             if (league == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Delete Error: League has already been removed." });
             }
+            try
+            {
+                _context.Leagues.Remove(league);
+                await _context.SaveChangesAsync();
 
-            _context.Leagues.Remove(league);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+                return NoContent();
+            }
+            catch(DbUpdateException)
+            {
+                return BadRequest(new { message = "Delete Error: Unable to delete league." });
+            }
+            
         }
 
         private bool LeagueExists(string id)

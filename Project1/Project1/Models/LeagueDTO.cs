@@ -9,7 +9,6 @@ namespace Project1.Models
         public string Name { get; set; }
         public int? TeamCount { get; set; }
 
-
         public ICollection<TeamDTO> Teams { get; set; }
     }
 }

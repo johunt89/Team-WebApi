@@ -89,6 +89,9 @@ namespace Project1.Controllers
                 })
                 .Where(l => l.LeagueCode.ToLower() == id.ToLower())
                 .ToListAsync();
+
+            //add return error message if no teams in league
+
         }
 
         // GET: api/Teams/5
@@ -130,8 +133,6 @@ namespace Project1.Controllers
             teamToUpdate.Name = teamDTO.Name;
             teamToUpdate.Budget = teamDTO.Budget ?? throw new ArgumentNullException(nameof(teamDTO), "The value of 'teamDTO.Budget' should not be null");
             teamToUpdate.LeagueCode = teamDTO.LeagueCode ?? throw new ArgumentNullException(nameof(teamDTO), "The value of 'teamDTO.LeagueCode' should not be null");
-
-            _context.Entry(teamToUpdate).Property("RowVersion").OriginalValue = teamDTO.RowVersion;
 
             try
             {

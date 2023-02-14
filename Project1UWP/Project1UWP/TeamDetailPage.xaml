@@ -1,0 +1,78 @@
+﻿<Page
+    x:Class="Project1UWP.TeamDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Project1UWP"
+    xmlns:data="using:Project1UWP.Models"
+    xmlns:converters="using:Project1UWP.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:ByteToStringConverter x:Key="ByteToStringConverter"/>
+    </Page.Resources>
+    <ScrollViewer>
+        <Grid x:Name="LayoutRoot">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,12,0,6">
+                <TextBlock Text="Project 1b" FontSize="30" Margin="12,0,0,0" />
+                <TextBlock x:Name="txtPageTitle" Text="{x:Bind view.Name }" FontSize="20" Margin="13,3,0,3"/>
+                <Rectangle Fill="#FFF4F4F5" Height="1" Stroke="Black" HorizontalAlignment="Stretch" Margin="0,2,0,2"/>
+            </StackPanel>
+
+            <Grid x:Name="ContentPanel" Grid.Row="1" Margin="10,0,10,0">
+                <Grid x:Name="teamDisplayGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="3,0,0,0"
+                               VerticalAlignment="Center" Name="nameTextBlock" Text="Team Name"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Height="30" Name="nameTextBox"
+                             MaxLength="50" InputScope="Text" Text="{x:Bind view.Name,Mode=TwoWay}" AcceptsReturn="True"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="3,0,0,0"
+                               VerticalAlignment="Center" Name="budgetTextBlock" Text="Budget"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Height="30" Name="budgetTextBox"
+                             MaxLength="50" InputScope="Number" Text="{x:Bind view.Budget,Mode=TwoWay}" AcceptsReturn="True"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="3,0,0,0"
+                               VerticalAlignment="Center" Name="leagueTextBlock" Text="League:"/>
+                    <ComboBox x:Name="LeagueCombo" Grid.Column="1" Grid.Row="2"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                              SelectedValuePath="Code" DisplayMemberPath="Name"
+                              SelectedValue="{Binding LeagueCode, Mode=TwoWay}" />
+                
+
+                    <RelativePanel Grid.Row="7" Grid.Column="2">
+                        <Button x:Name="btnDelete" Content="Delete" RelativePanel.LeftOf="btnSave"
+                                    Click="btnDelete_Click" Margin="6,6,0,6" />
+                        <Button x:Name="btnSave" Content="Save" RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                    Click="btnSave_Click" Margin="6,6,6,6" />
+                        <Button x:Name="btnCancel" Content="Cancel" RelativePanel.RightOf="btnSave"
+                                   Click="btnCancel_Click" Margin="0,6,6,6" />
+                    </RelativePanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</Page>
