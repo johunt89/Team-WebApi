@@ -70,11 +70,9 @@ namespace Project1UWP
             try
             {
                 List<Team> teams;
-                
-                //if(leagueCode.GetValueOrDefault() != "")
                 if(leagueCode == null || leagueCode == "")
                 {
-                    teams = await teamRepository.GetTeams();
+                    teams = await teamRepository.GetTeamPlayerCounts();
                     
                 }
                 else

@@ -42,7 +42,7 @@
                             <StackPanel x:ConnectionId='10' Width="300">
                                 <TextBlock x:ConnectionId='11'                     
                                            FontSize="20"/>
-                                <TextBlock x:ConnectionId='12'                       
+                                <TextBlock x:ConnectionId='12'                                      
                                            FontSize="14" />
                             </StackPanel>
                         </DataTemplate>

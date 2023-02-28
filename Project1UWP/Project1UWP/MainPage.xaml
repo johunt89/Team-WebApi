@@ -42,7 +42,7 @@
                             <StackPanel Width="300">
                                 <TextBlock Text="{x:Bind Name}"
                                            FontSize="20"/>
-                                <TextBlock Text="{x:Bind Budget}"
+                                <TextBlock Text="{x:Bind NumberOfPlayersOnTeam}"
                                            FontSize="14" />
                             </StackPanel>
                         </DataTemplate>

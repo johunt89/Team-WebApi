@@ -30,13 +30,13 @@
     <AppXManifest Include="D:\Documents\School\Semester 4\PROG1442\Project1A\Project1UWP\Project1UWP\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2023-02-14T03:12:25.013</Modified>
+      <Modified>2023-02-28T17:36:45.338</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="D:\Documents\School\Semester 4\PROG1442\Project1A\Project1UWP\Project1UWP\bin\x86\Debug\Project1UWP.exe">
       <PackagePath>entrypoint\Project1UWP.exe</PackagePath>
-      <Modified>2023-02-14T03:12:24.488</Modified>
+      <Modified>2023-02-28T17:36:44.284</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\jorda\.nuget\packages\microsoft.aspnet.webapi.client\5.2.9\lib\netstandard2.0\System.Net.Http.Formatting.dll">
       <PackagePath>System.Net.Http.Formatting.dll</PackagePath>
@@ -102,15 +102,15 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Documents\School\Semester 4\PROG1442\Project1A\Project1UWP\Project1UWP\bin\x86\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2023-02-14T03:12:24.409</Modified>
+      <Modified>2023-02-28T17:36:44.164</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Documents\School\Semester 4\PROG1442\Project1A\Project1UWP\Project1UWP\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
-      <Modified>2023-02-14T03:12:24.410</Modified>
+      <Modified>2023-02-28T17:36:44.165</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Documents\School\Semester 4\PROG1442\Project1A\Project1UWP\Project1UWP\bin\x86\Debug\TeamDetailPage.xbf">
       <PackagePath>TeamDetailPage.xbf</PackagePath>
-      <Modified>2023-02-14T03:12:24.410</Modified>
+      <Modified>2023-02-28T17:36:44.165</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.19041.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -118,11 +118,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Documents\School\Semester 4\PROG1442\Project1A\Project1UWP\Project1UWP\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2023-02-13T04:17:36.439</Modified>
+      <Modified>2023-02-14T20:39:07.938</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Documents\School\Semester 4\PROG1442\Project1A\Project1UWP\Project1UWP\bin\x86\Debug\Core\Project1UWP.exe">
       <PackagePath>Project1UWP.exe</PackagePath>
-      <Modified>2023-02-14T03:12:25.011</Modified>
+      <Modified>2023-02-28T17:36:45.333</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

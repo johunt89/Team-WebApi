@@ -36,6 +36,21 @@ namespace Project1UWP.Data
             }
         }
 
+        public async Task<List<Team>> GetTeamPlayerCounts()
+        {
+            HttpResponseMessage response = await client.GetAsync("/api/Teams/TeamPlayerCount");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                List<Team> Teams = await response.Content.ReadAsAsync<List<Team>>();
+                return Teams;
+            }
+            else
+            {
+                throw new Exception("Could not access the list of teams");
+            }
+        }
+
         public async Task<List<Team>> GetTeamsByLeague(string leagueCode)
         {
             HttpResponseMessage response = await client.GetAsync($"api/Teams/ByLeague/{leagueCode}");
@@ -52,7 +67,7 @@ namespace Project1UWP.Data
 
         public async Task<Team> GetTeam(int ID)
         {
-            HttpResponseMessage response = await client.GetAsync($"apit/Teams/{ID}");
+            HttpResponseMessage response = await client.GetAsync($"api/Teams/{ID}");
             if (response.IsSuccessStatusCode)
             {
                 Team Team = await response.Content.ReadAsAsync<Team>();

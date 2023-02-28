@@ -12,6 +12,7 @@ namespace Project1UWP.Data
         Task<List<Team>> GetTeams();
         Task<Team> GetTeam(int ID);
         Task<List<Team>> GetTeamsByLeague(string leagueCode);
+        Task<List<Team>> GetTeamPlayerCounts();
 
         Task AddTeam(Team teamToAdd);
         Task UpdateTeam(Team teamToUpdate);
